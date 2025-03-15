@@ -1,4 +1,4 @@
-If a client PUTs or POSTs a resource to a server containing attributes or elements that instead are to be populated by the server (e.g., href), the server SHALL return an HTTP 400 error.
+If a client PUTs or POSTs a resource to a server containing attributes or elements that instead are to be populated by the server (e.g., href) the server SHALL return an HTTP 400 error.
 A server MUST respond with a 400 (Bad Request) status code to any HTTP/1.1 request message that lacks a Host header field and to any request message that contains more than one Host header field or a Host header field with an invalid field-value.
 If a server did not wish a client to know of the existence of the resource, it should instead send a 404 (“Not Found”) response code.
 The server generating a 401 response MUST send a WWW-authenticate header field containing at least one challenge applicable to the target resource.
