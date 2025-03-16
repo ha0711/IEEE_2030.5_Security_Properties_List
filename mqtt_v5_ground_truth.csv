@@ -1,0 +1,40 @@
+Where a flag bit is marked as “Reserved” it is reserved for future use and MUST be set to the value listed.
+After a Network Connection is established by a Client to a Server the first packet sent from the Client to the Server MUST be a CONNECT packet.
+The Server MUST process a second CONNECT packet sent from a Client as a Protocol Error and close the Network Connection.
+The protocol name MUST be the UTF-8 String "MQTT". If the Server does not want to accept the CONNECT and wishes to reveal that it is an MQTT Server it MAY send a CONNACK packet with Reason Code of 0x84 (Unsupported Protocol Version) and then it MUST close the Network Connection.
+If the Keep Alive value is non-zero and the Server does not receive an MQTT Control Packet from the Client within one and a half times the Keep Alive time period it MUST close the Network Connection to the Client as if the network had failed.
+A PUBLISH Packet MUST NOT have both QoS bits set to 1. If a Server or Client receives a PUBLISH packet which has both QoS bits set to 1 it is a Malformed Packet. Use DISCONNECT with Reason Code 0x81 (Malformed Packet).
+Bits 3 2 1 and 0 of the Fixed Header in the PUBREL packet are reserved and MUST be set to 0 0 1 and 0 respectively. The Server MUST treat any other value as malformed and close the Network Connection.
+Bits 3 2 1 and 0 of the Fixed Header of the SUBSCRIBE packet are reserved and MUST be set to 0 0 1 and 0 respectively. The Server MUST treat any other value as malformed and close the Network Connection.
+The Server MUST treat a SUBSCRIBE packet as malformed if any of Reserved bits in the Payload are non-zero.
+The Server MUST send a PINGRESP packet in response to a PINGREQ packet.
+The ClientID MUST be used by Clients and by Servers to identify state that they hold relating to this MQTT Session between the Client and the Server.
+The ClientID MUST be present and is the first field in the CONNECT packet Payload.
+The ClientID MUST be a UTF-8 Encoded String.
+The Server MUST allow ClientID’s which are between 1 and 23 UTF-8 encoded bytes in length and that 910 contain only the characters.
+A Server MAY allow a Client to supply a ClientID that has a length of zero bytes however if it does so the Server MUST treat this as a special case and assign a unique ClientID to that Client.
+It MUST then process the CONNECT packet as if the Client had provided that unique ClientID and MUST return the Assigned Client Identifier in the CONNACK packet.
+If the Server rejects the ClientID it MAY respond to the CONNECT packet with a CONNACK using Reason Code 0x85 (Client Identifier not valid) Handling errors and then it MUST close the Network Connection.
+If the User Name Flag is set to 1 the User Name is the next field in the Payload. The User Name MUST be a UTF-8 Encoded String.
+The receiver of a PUBLISH Packet MUST respond with the packet as determined by the QoS in the PUBLISH Packet.
+In this case the Server 1730 MUST deliver the message to the Client respecting the maximum QoS of all the matching subscriptions.
+If the Client specified a Subscription Identifier for any of the overlapping subscriptions the Server MUST send those Subscription Identifiers in the message which is published as the result of the subscriptions.
+If the Server sends a single copy of the message it MUST include in the PUBLISH packet the Subscription Identifiers for all matching subscriptions which have a Subscription Identifiers their order is not significant.
+If the Server sends multiple PUBLISH packets it MUST send in each of them the Subscription Identifier of the matching subscription if it has a Subscription Identifier.
+A PUBLISH packet sent from a Client to a Server MUST NOT contain a Subscription Identifier.
+The Client MUST NOT send more than Receive Maximum QoS 1 and QoS 2 PUBLISH packets for which it has not received PUBACK PUBCOMP or PUBREC with a Reason Code of 128 or greater from the Server.
+The Client MUST NOT delay the sending of any packets other than PUBLISH packets due to having sent Receive Maximum PUBLISH packets without receiving acknowledgements for them.
+The Server MUST NOT send more than Receive Maximum QoS 1 and QoS 2 PUBLISH packets for which it has not received PUBACK PUBCOMP or PUBREC with a Reason Code of 128 or greater from the Client.
+The Server MUST NOT delay the sending of any packets other than PUBLISH packets due to having sent Receive Maximum PUBLISH packets without receiving acknowledgements for them.
+The Server MUST NOT send this property if it would increase the size of the CONNACK packet beyond the Maximum Packet Size specified by the Client.
+The Server MUST send all User Properties unaltered in a PUBLISH packet when forwarding the Application Message to a Client. The Server MUST maintain the order of User Properties when forwarding the Application Message.
+The sender MUST NOT send this property if it would increase the size of the PUBACK packet beyond the Maximum Packet Size specified by the receiver.
+The sender MUST NOT send this property if it would increase the size of the PUBREL packet beyond the Maximum Packet Size specified by the receiver.
+The sender MUST NOT send this property if it would increase the size of the PUBCOMP packet beyond the Maximum Packet Size specified by the receiver.
+The Topic Filters MUST be a UTF-8 Encoded String. Each Payload MUST contain at least one Topic Filter and Subscription Options pair.
+The sender MUST NOT send this property if it would increase the size of the DISCONNECT packet beyond the Maximum Packet Size specified by the receiver.
+The sender MUST NOT send this property if it would increase the size of the AUTH packet beyond the Maximum Packet Size specified by the receiver.
+The Response Topic MUST be a UTF-8 Encoded String.
+The Response Topic MUST NOT contain wildcard characters.
+The Server MUST send the Response Topic unaltered to all subscribers receiving the Application Message.
+The Server MUST send the Correlation Data unaltered to all subscribers receiving the Application Message.
