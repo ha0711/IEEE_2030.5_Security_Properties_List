@@ -1,7 +1,7 @@
 Where a flag bit is marked as “Reserved” it is reserved for future use and MUST be set to the value listed.
 After a Network Connection is established by a Client to a Server the first packet sent from the Client to the Server MUST be a CONNECT packet.
 The Server MUST process a second CONNECT packet sent from a Client as a Protocol Error and close the Network Connection.
-The protocol name MUST be the UTF-8 String "MQTT". If the Server does not want to accept the CONNECT and wishes to reveal that it is an MQTT Server it MAY send a CONNACK packet with Reason Code of 0x84 (Unsupported Protocol Version) and then it MUST close the Network Connection.
+"The protocol name MUST be the UTF-8 String ""MQTT"". If the Server does not want to accept the CONNECT and wishes to reveal that it is an MQTT Server it MAY send a CONNACK packet with Reason Code of 0x84 (Unsupported Protocol Version) and then it MUST close the Network Connection."
 If the Keep Alive value is non-zero and the Server does not receive an MQTT Control Packet from the Client within one and a half times the Keep Alive time period it MUST close the Network Connection to the Client as if the network had failed.
 A PUBLISH Packet MUST NOT have both QoS bits set to 1. If a Server or Client receives a PUBLISH packet which has both QoS bits set to 1 it is a Malformed Packet. Use DISCONNECT with Reason Code 0x81 (Malformed Packet).
 Bits 3 2 1 and 0 of the Fixed Header in the PUBREL packet are reserved and MUST be set to 0 0 1 and 0 respectively. The Server MUST treat any other value as malformed and close the Network Connection.
